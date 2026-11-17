@@ -1,0 +1,27 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    container_name: pocket-log-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+      - PORT=3000
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-}
+      - NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-}
+      - NEXT_PUBLIC_APP_NAME=PocketLog
+      - NEXT_PUBLIC_DEFAULT_CURRENCY=IDR
+    env_file:
+      - path: .env.local
+        required: false
+      - path: .env
+        required: false
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
